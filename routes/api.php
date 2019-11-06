@@ -64,9 +64,10 @@ Route::group([
     Route::post('search', 'BookingController@search');
     //Booking API
     Route::post('book', 'BookingController@book');
-//    Route::get('customers', 'CustomerController@index');
-//    Route::get('customers/{id}', 'CustomerController@show');
-//    Route::get('customers/{id}/edit', 'CustomerController@edit');
-//    Route::put('customers/{id}', 'CustomerController@update');
-//    Route::delete('customers/{id}', 'CustomerController@destroy');
+    Route::get('bookings', 'BookingController@index');
+    Route::post('updateStatus', 'BookingController@updateStatus');
+    Route::get('bookings/{id}', 'BookingController@show');
+    Route::get('bookings/{id}/edit', 'BookingController@edit');
+    //Transactions API
+    Route::post('bookings/{id}/addTran', 'BookingController@addTran');
 });

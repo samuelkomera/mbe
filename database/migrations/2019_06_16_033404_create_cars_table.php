@@ -18,6 +18,7 @@ class CreateCarsTable extends Migration
             $table->integer('vendorid');
             $table->string('make');
             $table->string('model');
+            $table->string('price');
             $table->string('carnumber');
             $table->string('carstatus')->default('available');
             $table->text('val');

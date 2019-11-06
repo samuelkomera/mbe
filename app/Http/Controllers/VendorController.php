@@ -129,8 +129,11 @@ class VendorController extends Controller
 
     protected function getNextStatementId()
     {
-        $next_id = \DB::select("select nextval('vendors_id_seq')");
-        return intval($next_id['0']->nextval) + 1;
+        $nextId = Vendor::orderBy('id', 'desc')->take(1)->first();
+        $nextId = json_decode($nextId,true);
+        $nextId = $nextId['id'] +1; 
+        return $nextId;
+
     }
 
 }

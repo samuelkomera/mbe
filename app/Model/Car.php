@@ -8,7 +8,7 @@ class Car extends Model
 {
     //
         protected $fillable = [ 
-        'vendorid','make','model','carnumber','carstatus','val'
+        'vendorid','make','model','price','carnumber','carstatus','val'
         ];  
 
         protected $table = 'cars';

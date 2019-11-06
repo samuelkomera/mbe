@@ -3,7 +3,7 @@
 namespace App\Model\Booking;
 
 
-class Head implements JsonSerializable
+class Customer implements \JsonSerializable
 {
     public function __construct($request)
     {
@@ -12,8 +12,8 @@ class Head implements JsonSerializable
     }
     public function jsonSerialize() {
         return [
-            'make'  => $this->make;
-            'model' => $this->model;
+            'make'  => $this->make,
+            'model' => $this->model,
         ];
     }
 }

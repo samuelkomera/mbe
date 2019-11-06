@@ -59,12 +59,15 @@ class CarController extends Controller
                   'make'        =>  $request->get('make'),
                   'model'       =>  $request->get('model'),
                   'carnumber'   =>  $request->get('carnumber'),
+                  'price'       =>  $request->get('price'),
+                  'vprice'      => null,
                   "vendor"      =>  $vendor
               ];
             $car = new Car([
               'vendorid'    =>  $vendor->id,
               'make'        =>  $request->get('make'),
               'model'       =>  $request->get('model'),
+              'price'       =>  $request->get('price'),
               'carnumber'   =>  $request->get('carnumber'),
               'val'         =>  json_encode($carInfo, true)
             ]);
@@ -125,7 +128,10 @@ class CarController extends Controller
     }
     protected function getNextStatementId()
     {
-        $next_id = \DB::select("select nextval('cars_id_seq')");
-        return intval($next_id['0']->nextval) + 1;
+        $nextId = Car::orderBy('id', 'desc')->take(1)->first();
+        $nextId = json_decode($nextId,true);
+        $nextId = $nextId['id'] +1; 
+        return $nextId;
+
     }
 }

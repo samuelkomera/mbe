@@ -36,12 +36,13 @@ class EmployeeController extends Controller
      */
     public function store(Request $request)
     {
+//        return $this->getNextStatementId();
             $employeeName =(object) [
                   'first'     =>  $request->get('first'),
                   'last'      =>  $request->get('last'),
             ];
             $employeeInfo =(object) [
-                  'id'        =>  $this->getNextStatementId() + 1,
+                  'id'        =>  $this->getNextStatementId(),
                   'name'      =>  $employeeName,
                   'phonenumber'=> $request->get('phonenumber'),
                   'email'      => $request->get('email')
@@ -126,8 +127,10 @@ class EmployeeController extends Controller
     } 
     protected function getNextStatementId()
     {
-        $next_id = \DB::select("select nextval('employees_id_seq')");
-        return intval($next_id['0']->nextval);
+        $nextId = Employee::orderBy('id', 'desc')->take(1)->first();
+        $nextId = json_decode($nextId,true);
+        $nextId = $nextId['id'] +1;
+        return $nextId;
     }
 
 }
