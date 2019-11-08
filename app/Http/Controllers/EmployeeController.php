@@ -36,58 +36,36 @@ class EmployeeController extends Controller
      */
     public function store(Request $request)
     {
-//        return $this->getNextStatementId();
-            $employeeName =(object) [
-                  'first'     =>  $request->get('first'),
-                  'last'      =>  $request->get('last'),
-            ];
-            $employeeInfo =(object) [
-                  'id'        =>  $this->getNextStatementId(),
-                  'name'      =>  $employeeName,
-                  'phonenumber'=> $request->get('phonenumber'),
-                  'email'      => $request->get('email')
-            ];
-            $employee = new Employee([
+        $employeeName =(object) [
               'first'     =>  $request->get('first'),
               'last'      =>  $request->get('last'),
-              'val'       =>  json_encode($employeeInfo, true)
-            ]);
-            $employee->save();
-           return response()->json(['message' => 'Successfully Added New Staff']);
+        ];
+        $employeeInfo =(object) [
+              'id'          =>  null,
+              'name'        =>  $employeeName,
+              'phonenumber' => $request->get('phonenumber'),
+              'email'       => $request->get('email')
+        ];
+        $employee = new Employee([
+          'first'     =>  $request->get('first'),
+          'last'      =>  $request->get('last'),
+          'val'       =>  json_encode($employeeInfo, true)
+        ]);
+        $employee->save();
+        DB::table('employees') ->where('id', $employee->id)->update(['val->id' => $vendor->id]);
+        return response()->json(['message' => 'Successfully Added New Staff']);
 
     }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         $employee = Employee::find($id);
         return response()->json($employee);
     }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
         $employee = Employee::find($id);
         return response()->json($employee);
     }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         $employeeName =(object) [
@@ -95,7 +73,7 @@ class EmployeeController extends Controller
               'last'      =>  $request->get('last'),
         ];
         $employeeInfo =(object) [
-              'id'        =>  $this->getNextStatementId(),
+              'id'        =>  $id,
               'name'      =>  $employeeName,
               'phonenumber'=> $request->get('phonenumber'),
               'email'      => $request->get('email')
@@ -110,13 +88,6 @@ class EmployeeController extends Controller
             'message' => 'Successfully Updated Employee member'
         ]);
     }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {  
         Employee::find($id)->delete();
@@ -125,12 +96,4 @@ class EmployeeController extends Controller
         ]);
 
     } 
-    protected function getNextStatementId()
-    {
-        $nextId = Employee::orderBy('id', 'desc')->take(1)->first();
-        $nextId = json_decode($nextId,true);
-        $nextId = $nextId['id'] +1;
-        return $nextId;
-    }
-
 }
